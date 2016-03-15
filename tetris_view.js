@@ -20,7 +20,7 @@ var view = {
   },
 
   showGameLoop: function() {
-    var INTERVAL = 185; // ~30 fps
+    var INTERVAL = 85; // ~30 fps
     setInterval( function() {
       controller.handleInterval();
     }, INTERVAL);

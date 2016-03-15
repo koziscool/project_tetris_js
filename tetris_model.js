@@ -159,7 +159,19 @@ var model = {
   },
 
   dropTile: function() {
+    for( var i = this.numRows - 1; i >= 0; i-- ) { 
+      for (var j = 0; j < this.numCols; j++) {
+        if( this.getTile( i, j) === 'moving' ) {
 
+          for( var k = this.numRows - 1; k >= 0; k-- ) { 
+
+            // this.setTile( i, j-1, 'moving' );  
+            // this.setTile( i, j, false ); 
+          
+          }
+        }
+      }
+    }
   },
 
   createNewRandomTile: function() {
