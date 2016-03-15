@@ -20,7 +20,7 @@ var view = {
   },
 
   showGameLoop: function() {
-    var INTERVAL = 600; // ~30 fps
+    var INTERVAL = 185; // ~30 fps
     setInterval( function() {
       controller.handleInterval();
     }, INTERVAL);
@@ -30,9 +30,7 @@ var view = {
     $('.grid-container').append("<div class='block'></div>");
   },
 
-
   render: function() {
-
     for (var row = 0; row < this.numRows; row++) {
       for (var col = 0; col < this.numCols; col++) {
 
@@ -44,7 +42,6 @@ var view = {
         }
       }
     }  
-
   },
 
   displayBlock: function(x,y,size) {
@@ -63,38 +60,6 @@ var view = {
     }  
   },
 
-  getKeyPress: function() {
-
-    window.addEventListener('keydown', function(eventObject) {
-      
-      pressedKey = eventObject.code;
-      
-      switch (pressedKey) {
-        case 'ArrowRight':
-          pressedKey = "right";
-          break;
-
-        case 'ArrowLeft':
-          pressedKey = "left";
-          break;
-
-        case 'ArrowUp':
-          pressedKey = "up";
-          break;
-
-        case 'ArrowDown':
-          pressedKey = "down";
-          break;
-
-        default:
-          break;
-      };
-
-      controller.gameLoop(pressedKey);
-    });
-  
-  },        
-
 
 getKeyPress: function() {
 
@@ -103,13 +68,17 @@ getKeyPress: function() {
       
       switch (pressedKey) {
       case 'ArrowRight':
-        contoller.giveKeyPress("right")
+        controller.giveKeyPress("right");
         break;
 
       case 'ArrowLeft':
-        contoller.giveKeyPress("left")
+        controller.giveKeyPress("left");
         break;
-      
+
+      case 'ArrowDown':
+        controller.giveKeyPress("down");
+        break;
+
       default:    
         break;
       }

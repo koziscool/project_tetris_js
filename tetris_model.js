@@ -1,3 +1,4 @@
+
 var model = {
 
   blockSize: 1,  
@@ -43,7 +44,6 @@ var model = {
         this.tetrisGrid[ this.gridKey(row, col) ] = false;
       }
     }
-
     //generates the position of the 1st falling block
     this.generateBlockPosition();
   },
@@ -52,7 +52,7 @@ var model = {
     
     var pos = getMovingTile;
 
-    if (dir === "right")
+    if (dir === "right") {
         var posY = pos[1] + 1;
     } else {
         var posY = pos[1] - 1;
@@ -65,7 +65,6 @@ var model = {
     var blockX = 0;
 
     this.setTile( blockX, blockY, "moving" );
-
   },
 
   checkEmptyGrid: function(x,y) {
@@ -78,7 +77,6 @@ var model = {
   },
 
   moveBlocks: function() {
-
     for( var i = this.numRows - 1; i >= 0; i-- ) { 
       for (var j = 0; j < this.numCols; j++) {
         if( this.getTile( i, j) ) {
@@ -86,12 +84,13 @@ var model = {
           if( nextRow < this.numRows && !this.getTile( nextRow, j) ) {
             this.setTile( nextRow, j, this.getTile( i, j) );  
             this.setTile( i, j, false );  
+          } else {
+            this.setTile( i, j, 'stationary' );
           }
         }
       }
     }
   },
-
 
   handleBottomRowFull: function() {
     var row = this.numRows - 1
@@ -106,13 +105,10 @@ var model = {
 
       for( var i = this.numRows - 2; i >= 0; i-- ) { 
         for (var j = 0; j < this.numCols; j++) {
-          if( this.getTile( i, j) ) {
+          var currentStatus = this.getTile( i, j);
+          if( currentStatus ) {
             var nextRow = i  + 1;
-            if (nextRow === this.numRows - 1) { 
-              this.setTile( nextRow, j, "stationary" );  
-            } else {
-               this.setTile( nextRow, j, "moving" );
-            }
+            this.setTile( nextRow, j, currentStatus );  
             this.setTile( i, j, false );  
           }
         }
@@ -120,13 +116,49 @@ var model = {
     }
   },
 
+  numMovingBlocks: function() {
+    var numBlocks = 0;
+    for( var i = this.numRows - 1; i >= 0; i-- ) { 
+      for (var j = 0; j < this.numCols; j++) {
+        if( this.getTile( i, j) === 'moving' ) {
+          numBlocks += 1;
+        }
+      }
+    }
+    return numBlocks;
+  },
+
   handleInterval: function(){
-    this.generateBlockPosition();
+    if (this.numMovingBlocks() === 0 ){
+      this.generateBlockPosition();
+    }
     this.moveBlocks();
     this.handleBottomRowFull();
   },
 
-  dropTiles: function() {
+  moveRight: function() {
+    for( var i = this.numRows - 1; i >= 0; i-- ) { 
+      for (var j = this.numCols - 1; j >= 0; j-- ) {
+        if( this.getTile( i, j) === 'moving' && j < this.numCols - 1) {
+          this.setTile( i, j+1, 'moving' );  
+          this.setTile( i, j, false ); 
+        }
+      }
+    }
+  },
+
+  moveLeft: function() {
+    for( var i = this.numRows - 1; i >= 0; i-- ) { 
+      for (var j = 0; j < this.numCols; j++) {
+        if( this.getTile( i, j) === 'moving' && j > 0 ) {
+          this.setTile( i, j-1, 'moving' );  
+          this.setTile( i, j, false ); 
+        }
+      }
+    }
+  },
+
+  dropTile: function() {
 
   },
 

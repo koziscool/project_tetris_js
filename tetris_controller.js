@@ -7,8 +7,21 @@ var controller = {
   },
 
   giveKeyPress: function(dir) {
-    model.updateTilePos(dir);
+    // console.log(dir);
+    // model.updateTilePos(dir);
+    switch (dir) {
+    case 'right':
+      model.moveRight();
+      break;
+    case 'left':
+      model.moveLeft();
+      break;
+    case 'right':
+      model.moveDown();
+      break;
+    }
   },
+
 
   init: function() {
     model.init();
