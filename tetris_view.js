@@ -21,12 +21,19 @@ var view = {
 
 
   render: function() {
-    for (var j = 0; j < 20; j++) {
-      for (var i = 0; i < 10; i++) {
-          $('.grid-container').append('<div class="block"> <div>');
+    for (var row = 0; row < 20; row++) {
+      for (var col = 0; col < 10; col++) {
+          var classes = '<div class="block block-' + row.toString() + '-' + col.toString() + '">' + '</div>';
+          console.log("Classes " + classes);
+          $('.grid-container').append(classes);
       }
-      $('.grid-container').append('<br>');
     }  
+
+    console.log("Got target" + $('.block-8-8'));
+
+    $('.block-8-8').addClass("occupied-block");
+    $('.block-8-7').addClass("occupied-block");
+    $('.block-8-9').addClass("occupied-block");
   },
 
   getKeyPress: function() {
