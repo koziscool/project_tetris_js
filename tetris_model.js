@@ -66,33 +66,41 @@ var model = {
   },
 
   moveBlocks: function() {
-    var row, col;
-    blocks = [];
-    for (var row = 0;  row < this.numRows; row++) {
-      for (var col = 0;  col < this.numCols; col++) {
-        if( this.tetrisGrid[ this.gridKey(row, col) ] ) {
-          blocks.push( this.gridKey(row, col) );
+
+    for( var i = this.numRows - 1; i >= 0; i-- ) {
+      
+      for (var j = 0; j < this.numCols; j++) {
+
+        if( this.getTile[ this.gridKey(i, j)]) {
+          var nextRow = i  + 1; 
+          if( nextRow < this.numRows && !this.getTile[ this.gridKey(nextRow, col)]) {
+            this.setTile( nextRow, j, true );  
+            this.setTile( i, j, false );  
+          }
         }
       }
     }
 
-    for( var i = 0; i < blocks.length; i++ ) {
-      row = (+blocks[i].split(',')[0]);
-      col = (+blocks[i].split(',')[1]);
-      var newRow = row + 1;
+    // var row, col;
+    // blocks = [];
+    // for (var row = 0;  row < this.numRows; row++) {
+    //   for (var col = 0;  col < this.numCols; col++) {
+    //     if( this.tetrisGrid[ this.gridKey(row, col) ] ) {
+    //       blocks.push( this.gridKey(row, col) );
+    //     }
+    //   }
+    // }
 
-      if( newRow < this.numRows && !this.getTile[ this.gridKey(row + 1, col)]) {
-        this.setTile( newRow, col, true );  
-        this.setTile( row, col, false );  
-          // this.blockX = newX;
-            // return true;   
-        // for (var col = this.blockY; col < this.blockY + this.blockSize ; col++) {
-      }
-    }
+    // for( var i = 0; i < blocks.length; i++ ) {
+    //   row = (+blocks[i].split(',')[0]);
+    //   col = (+blocks[i].split(',')[1]);
+    //   var newRow = row + 1;
 
-    //    this.tetrisGrid[ this.gridKey(newX, col) ] = true;
-    // }   
-    // return false;
+    //   if( newRow < this.numRows && !this.getTile[ this.gridKey(row + 1, col)]) {
+    //     this.setTile( newRow, col, true );  
+    //     this.setTile( row, col, false );  
+    //   }
+    // }
   },
 
   handleInterval: function(){
