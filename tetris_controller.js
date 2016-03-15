@@ -21,7 +21,7 @@ var controller = {
 
 
   init: function() {
-    view.showNewBlock();
+    view.render();
     model.init();
 
     // var number = model.nextNumber;

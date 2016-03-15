@@ -28,10 +28,17 @@
 .block {
   width: 20px;
   height: 20px;
-  position:absolute;
-  top:0px;
-  left:95px;
-  background-color: red;
   border: 1px solid black;
   display: inline-block;
+}
+
+.occupied-block {
+  background-color: blue;
+  border: 1px solid black;
+  display: inline-block;
+}
+
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
 }

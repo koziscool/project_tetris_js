@@ -20,25 +20,13 @@ var view = {
   },
 
 
-  render: function(grid,score) {
-
-    for (var i = 0; i < 16; i++) {
-
-      var number = grid[i].value;
-
-      var target = "#number-" + String(i);
-
-      if (number != 0) {
-
-        $(target).empty();
-        $(target).append('<span><h2 class="text-center text-shadow-effect">' + String(number) + "</h2></span>");
-      } else {
-        $(target).empty();
-      };
-
-      $("#score").empty();
-      $("#score").text(score);
-    }
+  render: function() {
+    for (var j = 0; j < 20; j++) {
+      for (var i = 0; i < 10; i++) {
+          $('.grid-container').append('<div class="block"> <div>');
+      }
+      $('.grid-container').append('<br>');
+    }  
   },
 
   getKeyPress: function() {
