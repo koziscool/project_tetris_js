@@ -17,11 +17,6 @@ var view = {
           $('.grid-container').append(classes);
       }
     }  
-
-    // setInterval( function() {
-    //     controller.handleInterval();
-    //     //view.render();
-    //   }, INTERVAL);
   },
 
   showGameLoop: function() {
@@ -37,12 +32,6 @@ var view = {
 
 
   render: function() {
-    // for (var row = 0; row < 20; row++) {
-    //   for (var col = 0; col < 10; col++) {
-    //       var classes = '<div class="block block-' + row.toString() + '-' + col.toString() + '">' + '</div>';
-    //       $('.grid-container').append(classes);
-    //   }
-    // }  
 
     for (var row = 0; row < this.numRows; row++) {
       for (var col = 0; col < this.numCols; col++) {
