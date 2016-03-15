@@ -59,12 +59,9 @@ var model = {
   moveBlocks: function() {
 
     for( var i = this.numRows - 1; i >= 0; i-- ) { 
-
       for (var j = 0; j < this.numCols; j++) {
-
         if( this.getTile( i, j) ) {
           var nextRow = i  + 1;
-
           if( nextRow < this.numRows && !this.getTile( nextRow, j) ) {
             this.setTile( nextRow, j, true );  
             this.setTile( i, j, false );  
@@ -72,13 +69,36 @@ var model = {
         }
       }
     }
+  },
 
+
+  handleBottomRowFull: function() {
+    var row = this.numRows - 1
+    var rowFull = true; 
+    for (var j = 0; j < this.numCols; j++) {
+      rowFull = rowFull && this.getTile( row, j)
+    }
+    if( rowFull ){
+      for (var j = 0; j < this.numCols; j++) {
+        this.setTile( row, j, false );  
+      }
+
+      for( var i = this.numRows - 2; i >= 0; i-- ) { 
+        for (var j = 0; j < this.numCols; j++) {
+          if( this.getTile( i, j) ) {
+            var nextRow = i  + 1;
+            this.setTile( nextRow, j, true );  
+            this.setTile( i, j, false );  
+          }
+        }
+      }
+    }
   },
 
   handleInterval: function(){
-    //this.dropTiles();
     this.generateBlockPosition();
-    return this.moveBlocks();
+    this.moveBlocks();
+    this.handleBottomRowFull();
   },
 
   dropTiles: function() {
