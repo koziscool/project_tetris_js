@@ -1,5 +1,8 @@
 var view = {
 
+  numRows: 20,
+  numCols: 10,
+
   showTile: function(number,grid,tilePosition) {
     $("#number-" + String(tilePosition)).
       append('<span><h2 class="text-center text-shadow-effect">' + String(number) + "</h2></span>");
@@ -8,8 +11,8 @@ var view = {
 
   init: function() {
  
-    for (var row = 0; row < 20; row++) {
-      for (var col = 0; col < 10; col++) {
+    for (var row = 0; row < this.numRows; row++) {
+      for (var col = 0; col < this.numCols; col++) {
           var classes = '<div class="block block-' + row.toString() + '-' + col.toString() + '">' + '</div>';
           $('.grid-container').append(classes);
       }
@@ -34,17 +37,28 @@ var view = {
 
 
   render: function() {
-    for (var row = 0; row < 20; row++) {
-      for (var col = 0; col < 10; col++) {
-          var classes = '<div class="block block-' + row.toString() + '-' + col.toString() + '">' + '</div>';
-          $('.grid-container').append(classes);
+    // for (var row = 0; row < 20; row++) {
+    //   for (var col = 0; col < 10; col++) {
+    //       var classes = '<div class="block block-' + row.toString() + '-' + col.toString() + '">' + '</div>';
+    //       $('.grid-container').append(classes);
+    //   }
+    // }  
+
+    for (var row = 0; row < this.numRows; row++) {
+      for (var col = 0; col < this.numCols; col++) {
+
+        target = ".block-" + row + "-" + col;
+        if ( model.getTile(row, col) ) {
+          $(target).addClass("occupied-block");      
+        } else {
+          $(target).removeClass("occupied-block");      
+        }
       }
     }  
 
   },
 
   displayBlock: function(x,y,size) {
-
     for (var i = y ; i <  y + size; i++) {
       target = ".block-" + x + "-" + i; 
       $(target).removeClass("occupied-block");

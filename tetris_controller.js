@@ -6,19 +6,21 @@ var controller = {
  //
 
   handleInterval: function() {
-    //model.handleInterval();
-    if (model.moveBlock()) {
-      view.undisplayBlock(model.blockX,model.blockY,model.blockSize); 
-      view.displayBlock(model.blockX,model.blockY,model.blockSize); 
-    } else {
-      model.generateBlockPosition();
-    }
+    model.handleInterval();
+    view.render();
+
+    // if (model.moveBlock()) {
+    //   view.undisplayBlock(model.blockX,model.blockY,model.blockSize); 
+    //   view.displayBlock(model.blockX,model.blockY,model.blockSize); 
+    // } else {
+    //   model.generateBlockPosition();
+    // }
   },
 
 
   init: function() {
-    view.render();
     model.init();
+    view.init();
     view.displayBlock(model.blockX,model.blockY,model.blockSize); 
     view.showGameLoop();
     // var number = model.nextNumber;

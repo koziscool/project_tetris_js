@@ -1,9 +1,9 @@
 var model = {
  
-  block: undefined,
-  blockX: 0,
-  blockY: 0,
-  blockSize: 3,  
+  // block: undefined,
+  // blockX: 0,
+  // blockY: 0,
+  blockSize: 1,  
   score: 0,
   numRows: 20,
   numCols: 10,
@@ -48,11 +48,12 @@ var model = {
 
   generateBlockPosition: function() {
     var maxCol = this.numCols - this.blockSize + 1;
-    var y = Math.floor(Math.random()*maxCol);
-    this.blockX = 0;
-    this.blockY = y;
+    var blockY = Math.floor(Math.random()*maxCol);
+    var blockX = 0;
 
-    console.log("Generate the block position: " + this.blockX + " , " + this.blockY);
+    this.setTile( blockX, blockY, true );
+
+    console.log("Generate the block position: " + blockX + " , " + blockY);
   },
 
   checkEmptyGrid: function(x,y) {
@@ -64,22 +65,40 @@ var model = {
     return true;
   },
 
-  moveBlock: function() {
-    var newX = this.blockX + 1;
-    if (newX < this.numRows && this.checkEmptyGrid(newX,this.blockY)) {  
-        this.blockX = newX;
-        return true;   
+  moveBlocks: function() {
+    var row, col;
+    blocks = [];
+    for (var row = 0;  row < this.numRows; row++) {
+      for (var col = 0;  col < this.numCols; col++) {
+        if( this.tetrisGrid[ this.gridKey(row, col) ] ) {
+          blocks.push( this.gridKey(row, col) );
+        }
+      }
     }
-    for (var col = this.blockY; col < this.blockY + this.blockSize ; col++) {
-       this.tetrisGrid[ this.gridKey(newX, col) ] = true;
-    }   
-    return false;
+
+    for( var i = 0; i < blocks.length; i++ ) {
+      row = (+blocks[i].split(',')[0]);
+      col = (+blocks[i].split(',')[1]);
+      var newRow = row + 1;
+
+      if( newRow < this.numRows && !this.getTile[ this.gridKey(row + 1, col)]) {
+        this.setTile( newRow, col, true );  
+        this.setTile( row, col, false );  
+          // this.blockX = newX;
+            // return true;   
+        // for (var col = this.blockY; col < this.blockY + this.blockSize ; col++) {
+      }
+    }
+
+    //    this.tetrisGrid[ this.gridKey(newX, col) ] = true;
+    // }   
+    // return false;
   },
 
   handleInterval: function(){
     //this.dropTiles();
-    //this.createNewRandomTile();
-    return moveBlock();
+    this.generateBlockPosition();
+    return this.moveBlocks();
   },
 
   dropTiles: function() {
