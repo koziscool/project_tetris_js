@@ -23,6 +23,18 @@ var model = {
     return this.tetrisGrid[ this.gridKey(x, y) ];
   },
 
+  getMovingTile: function() {
+    console.log("In here");
+    for (var row = 0; row < this.numRows; row++) { 
+      for (var col = 0; col < this.numCows; col++) { 
+        if (getTile(row,col) === "moving") {
+           console.log("In moving");
+           return [row,col]
+        }
+      }
+    }       
+  },
+
   getScore: function() {
     return this.score;
   },
@@ -43,7 +55,7 @@ var model = {
     var blockY = Math.floor(Math.random()*maxCol);
     var blockX = 0;
 
-    this.setTile( blockX, blockY, true );
+    this.setTile( blockX, blockY, "moving" );
 
   },
 
@@ -66,7 +78,7 @@ var model = {
           var nextRow = i  + 1;
 
           if( nextRow < this.numRows && !this.getTile( nextRow, j) ) {
-            this.setTile( nextRow, j, true );  
+            this.setTile( nextRow, j, this.getTile( i, j) );  
             this.setTile( i, j, false );  
           }
         }

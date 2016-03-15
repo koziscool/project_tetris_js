@@ -95,4 +95,30 @@ var view = {
   
   },        
 
+
+getKeyPress: function() {
+
+    window.addEventListener('keydown', function(eventObject) {
+      pressedKey = eventObject.code;
+      
+
+      switch (pressedKey) {
+      case 'ArrowRight':
+        var pos = controller.getMovingTilePos();
+        console.log("The next position is " + pos); 
+        break;
+
+      case 'ArrowLeft':
+        var pos = controller.getMovingTilePos();
+        console.log("The next position is " + pos); 
+        break;
+      
+      default:    
+        break;
+      }
+ 
+    });
+  },
+
+
 }

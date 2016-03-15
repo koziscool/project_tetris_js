@@ -6,12 +6,15 @@ var controller = {
 
   },
 
+  getMovingTilePos: function() {
+     return model.getMovingTile();
+  },
 
   init: function() {
     model.init();
     view.init();
     view.displayBlock(model.blockX,model.blockY,model.blockSize); 
     view.showGameLoop();
-
+    view.getKeyPress();
   }  
 }
