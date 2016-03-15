@@ -6,8 +6,8 @@ var controller = {
 
   },
 
-  getMovingTilePos: function() {
-     return model.getMovingTile();
+  giveKeyPress: function(dir) {
+    model.updateTilePos(dir);
   },
 
   init: function() {

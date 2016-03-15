@@ -24,11 +24,9 @@ var model = {
   },
 
   getMovingTile: function() {
-    console.log("In here");
     for (var row = 0; row < this.numRows; row++) { 
-      for (var col = 0; col < this.numCows; col++) { 
-        if (getTile(row,col) === "moving") {
-           console.log("In moving");
+      for (var col = 0; col < this.numCols; col++) { 
+        if (this.getTile(row,col) === "moving") {
            return [row,col]
         }
       }
@@ -48,6 +46,17 @@ var model = {
 
     //generates the position of the 1st falling block
     this.generateBlockPosition();
+  },
+
+  updateTilePos: function(dir) {
+    
+    var pos = getMovingTile;
+
+    if (dir === "right")
+        var posY = pos[1] + 1;
+    } else {
+        var posY = pos[1] - 1;
+    }  
   },
 
   generateBlockPosition: function() {
@@ -99,7 +108,11 @@ var model = {
         for (var j = 0; j < this.numCols; j++) {
           if( this.getTile( i, j) ) {
             var nextRow = i  + 1;
-            this.setTile( nextRow, j, true );  
+            if (nextRow === this.numRows - 1) { 
+              this.setTile( nextRow, j, "stationary" );  
+            } else {
+               this.setTile( nextRow, j, "moving" );
+            }
             this.setTile( i, j, false );  
           }
         }
