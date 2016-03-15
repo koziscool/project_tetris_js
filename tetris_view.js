@@ -7,8 +7,7 @@ var view = {
 
 
   init: function() {
-    var INTERVAL = 30; // ~30 fps
-
+ 
     for (var row = 0; row < 20; row++) {
       for (var col = 0; col < 10; col++) {
           var classes = '<div class="block block-' + row.toString() + '-' + col.toString() + '">' + '</div>';
@@ -16,10 +15,17 @@ var view = {
       }
     }  
 
+    // setInterval( function() {
+    //     controller.handleInterval();
+    //     //view.render();
+    //   }, INTERVAL);
+  },
+
+  showGameLoop: function() {
+    var INTERVAL = 600; // ~30 fps
     setInterval( function() {
-        controller.handleInterval();
-        view.render();
-      }, INTERVAL);
+      controller.handleInterval();
+    }, INTERVAL);
   },
 
   showNewBlock: function() {
@@ -35,10 +41,23 @@ var view = {
       }
     }  
 
+  },
 
-    $('.block-8-8').addClass("occupied-block");
-    $('.block-8-7').addClass("occupied-block");
-    $('.block-8-9').addClass("occupied-block");
+  displayBlock: function(x,y,size) {
+
+    for (var i = y ; i <  y + size; i++) {
+      target = ".block-" + x + "-" + i; 
+      $(target).removeClass("occupied-block");
+      $(target).addClass("occupied-block");
+    }  
+  },
+
+  undisplayBlock: function(x,y,size) {
+    x -= 1;
+    for (var i = y ; i <  y + size; i++) {
+      target = ".block-" + x + "-" + i; 
+      $(target).removeClass("occupied-block");
+    }  
   },
 
   getKeyPress: function() {
