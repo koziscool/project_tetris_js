@@ -9,8 +9,15 @@ var view = {
   init: function() {
     var INTERVAL = 30; // ~30 fps
 
-    setInterval(function() {
-        controller.dropTile();
+    for (var row = 0; row < 20; row++) {
+      for (var col = 0; col < 10; col++) {
+          var classes = '<div class="block block-' + row.toString() + '-' + col.toString() + '">' + '</div>';
+          $('.grid-container').append(classes);
+      }
+    }  
+
+    setInterval( function() {
+        controller.handleInterval();
         view.render();
       }, INTERVAL);
   },
@@ -24,12 +31,10 @@ var view = {
     for (var row = 0; row < 20; row++) {
       for (var col = 0; col < 10; col++) {
           var classes = '<div class="block block-' + row.toString() + '-' + col.toString() + '">' + '</div>';
-          console.log("Classes " + classes);
           $('.grid-container').append(classes);
       }
     }  
 
-    console.log("Got target" + $('.block-8-8'));
 
     $('.block-8-8').addClass("occupied-block");
     $('.block-8-7').addClass("occupied-block");
