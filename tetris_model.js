@@ -6,7 +6,6 @@ var model = {
   numRows: 20,
   numCols: 10,
   tetrisGrid: {},
-  emptySlots: [],
 
   currentPiece: {},
 
@@ -42,7 +41,6 @@ var model = {
     var maxCol = this.numCols - 1 - this.currentPiece.bufferRight;
     var blockY = Math.floor(Math.random()*(maxCol-minCol)) + minCol;
     this.currentPiece.center = [0, blockY];
-    // var blockX = 0;
 
     for ( i = 0; i < this.currentPiece.blocks.length; i++ ) {
       var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
@@ -90,7 +88,7 @@ var model = {
     }
   },
 
-  handleBottomRowFull: function() {
+  clearFullRows: function() {
     var row = this.numRows - 1
     var rowFull = true; 
     for (var j = 0; j < this.numCols; j++) {
@@ -131,19 +129,10 @@ var model = {
       this.generateBlockPosition();
     }
     this.moveBlocks();
-    this.handleBottomRowFull();
+    this.clearFullRows();
   },
 
   moveRight: function() {
-    // for( var i = this.numRows - 1; i >= 0; i-- ) { 
-    //   for (var j = this.numCols - 1; j >= 0; j-- ) {
-    //     if( this.getTile( i, j) === 'moving' && j < this.numCols - 1) {
-    //       this.setTile( i, j+1, 'moving' );  
-    //       this.setTile( i, j, false ); 
-    //     }
-    //   }
-    // }
-
     for( var i = 0; i < this.currentPiece.blocks.length; i++ ) {
       var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
       var col = this.currentPiece.blocks[i][1] + this.currentPiece.center[1];
@@ -171,7 +160,6 @@ var model = {
         this.setTile( row, col, 'moving');
       }
     }
-
   },
 
   moveLeft: function() {
@@ -186,7 +174,7 @@ var model = {
     for (var i = 0; i < this.currentPiece.blocks.length; i++ ) {
       var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
       var col = this.currentPiece.blocks[i][1] + this.currentPiece.center[1] + leftShift;
-      canMove = canMove && col < this.numCols && !this.getTile( row, col);
+      canMove = canMove && col >= 0 && !this.getTile( row, col);
     }
     if( canMove ) {
       this.currentPiece.center[1] += leftShift; 
