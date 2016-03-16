@@ -135,23 +135,71 @@ var model = {
   },
 
   moveRight: function() {
-    for( var i = this.numRows - 1; i >= 0; i-- ) { 
-      for (var j = this.numCols - 1; j >= 0; j-- ) {
-        if( this.getTile( i, j) === 'moving' && j < this.numCols - 1) {
-          this.setTile( i, j+1, 'moving' );  
-          this.setTile( i, j, false ); 
-        }
+    // for( var i = this.numRows - 1; i >= 0; i-- ) { 
+    //   for (var j = this.numCols - 1; j >= 0; j-- ) {
+    //     if( this.getTile( i, j) === 'moving' && j < this.numCols - 1) {
+    //       this.setTile( i, j+1, 'moving' );  
+    //       this.setTile( i, j, false ); 
+    //     }
+    //   }
+    // }
+
+    for( var i = 0; i < this.currentPiece.blocks.length; i++ ) {
+      var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
+      var col = this.currentPiece.blocks[i][1] + this.currentPiece.center[1];
+      this.setTile( row, col, false);
+    } 
+
+    var canMove = true;
+    var rightShift = 1;
+    for (var i = 0; i < this.currentPiece.blocks.length; i++ ) {
+      var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
+      var col = this.currentPiece.blocks[i][1] + this.currentPiece.center[1] + rightShift;
+      canMove = canMove && col < this.numCols && !this.getTile( row, col);
+    }
+    if( canMove ) {
+      this.currentPiece.center[1] += rightShift; 
+      for (var i = 0; i < this.currentPiece.blocks.length; i++ ) {
+        var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
+        var col = this.currentPiece.blocks[i][1] + this.currentPiece.center[1];
+        this.setTile( row, col, 'moving');
+      }
+    } else {
+      for (var i = 0; i < this.currentPiece.blocks.length; i++ ) {
+        var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
+        var col = this.currentPiece.blocks[i][1] + this.currentPiece.center[1];
+        this.setTile( row, col, 'moving');
       }
     }
+
   },
 
   moveLeft: function() {
-    for( var i = this.numRows - 1; i >= 0; i-- ) { 
-      for (var j = 0; j < this.numCols; j++) {
-        if( this.getTile( i, j) === 'moving' && j > 0 ) {
-          this.setTile( i, j-1, 'moving' );  
-          this.setTile( i, j, false ); 
-        }
+    for( var i = 0; i < this.currentPiece.blocks.length; i++ ) {
+      var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
+      var col = this.currentPiece.blocks[i][1] + this.currentPiece.center[1];
+      this.setTile( row, col, false);
+    } 
+
+    var canMove = true;
+    var leftShift = -1;
+    for (var i = 0; i < this.currentPiece.blocks.length; i++ ) {
+      var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
+      var col = this.currentPiece.blocks[i][1] + this.currentPiece.center[1] + leftShift;
+      canMove = canMove && col < this.numCols && !this.getTile( row, col);
+    }
+    if( canMove ) {
+      this.currentPiece.center[1] += leftShift; 
+      for (var i = 0; i < this.currentPiece.blocks.length; i++ ) {
+        var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
+        var col = this.currentPiece.blocks[i][1] + this.currentPiece.center[1];
+        this.setTile( row, col, 'moving');
+      }
+    } else {
+      for (var i = 0; i < this.currentPiece.blocks.length; i++ ) {
+        var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
+        var col = this.currentPiece.blocks[i][1] + this.currentPiece.center[1];
+        this.setTile( row, col, 'moving');
       }
     }
   },
