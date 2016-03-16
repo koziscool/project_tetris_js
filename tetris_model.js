@@ -165,9 +165,12 @@ var model = {
 
           for( var k = this.numRows - 1; k >= 0; k-- ) { 
 
-            // this.setTile( i, j-1, 'moving' );  
-            // this.setTile( i, j, false ); 
-          
+            if( !this.getTile(k, j) ) {
+              this.setTile( k, j, 'moving' );  
+              this.setTile( i, j, false ); 
+              break;
+            }
+
           }
         }
       }

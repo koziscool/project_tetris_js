@@ -16,8 +16,8 @@ var controller = {
     case 'left':
       model.moveLeft();
       break;
-    case 'right':
-      model.moveDown();
+    case 'down':
+      model.dropTile();
       break;
     }
   },
