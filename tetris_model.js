@@ -8,11 +8,7 @@ var model = {
   tetrisGrid: {},
   emptySlots: [],
 
-  currentPiece: [],
-
-  generateTile: function() {
-    
-  },
+  currentPiece: {},
 
   gridKey: function(row, col) {
     return row.toString() + ',' + col.toString();
@@ -45,10 +41,13 @@ var model = {
     var minCol = this.currentPiece.bufferLeft;
     var maxCol = this.numCols - 1 - this.currentPiece.bufferRight;
     var blockY = Math.floor(Math.random()*(maxCol-minCol)) + minCol;
+    this.currentPiece.center = [0, blockY];
     // var blockX = 0;
 
     for ( i = 0; i < this.currentPiece.blocks.length; i++ ) {
-      this.setTile( this.currentPiece.blocks[i][0], blockY + this.currentPiece.blocks[i][1], "moving" );
+      var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
+      var col = this.currentPiece.blocks[i][1] + this.currentPiece.center[1];
+      this.setTile( row, col, "moving" );
     }
   },
 
@@ -62,18 +61,32 @@ var model = {
   },
 
   moveBlocks: function() {
-    for( var i = this.numRows - 1; i >= 0; i-- ) { 
-      for (var j = 0; j < this.numCols; j++) {
-        if( this.getTile( i, j) ) {
-          var nextRow = i  + 1;
-          if( nextRow < this.numRows && !this.getTile( nextRow, j) ) {
-            this.setTile( nextRow, j, this.getTile( i, j) );  
-            this.setTile( i, j, false );  
-          } else {
-            this.setTile( i, j, 'stationary' );
-          }
-        }
-      }
+    var canMove = true;
+    for (var i = 0; i < this.currentPiece.blocks.length; i++ ) {
+      var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
+      var col = this.currentPiece.blocks[i][1] + this.currentPiece.center[1];
+      var nextRow = row + 1;
+      canMove = canMove && nextRow < this.numRows && !this.getTile( nextRow, col);
+    }
+
+    if(canMove) {
+      for( var i = 0; i < this.currentPiece.blocks.length; i++ ) {
+        var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
+        var col = this.currentPiece.blocks[i][1] + this.currentPiece.center[1];
+        this.setTile( row, col, false);
+      } 
+      this.currentPiece.center[0] += 1; 
+      for( var i = 0; i < this.currentPiece.blocks.length; i++ ) {
+        var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
+        var col = this.currentPiece.blocks[i][1] + this.currentPiece.center[1];
+        this.setTile( row, col, 'moving');
+      } 
+    } else {
+      for( var i = 0; i < this.currentPiece.blocks.length; i++ ) {
+        var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
+        var col = this.currentPiece.blocks[i][1] + this.currentPiece.center[1];
+        this.setTile( row, col, 'stationary');
+      }       
     }
   },
 
@@ -144,31 +157,35 @@ var model = {
   },
 
   dropTile: function() {
-    for( var i = this.numRows - 1; i >= 0; i-- ) { 
-      for (var j = 0; j < this.numCols; j++) {
-        if( this.getTile( i, j) === 'moving' ) {
 
-          for( var k = this.numRows - 1; k >= 0; k-- ) { 
+    for( var i = 0; i < this.currentPiece.blocks.length; i++ ) {
+      var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
+      var col = this.currentPiece.blocks[i][1] + this.currentPiece.center[1];
+      this.setTile( row, col, false);
+    } 
 
-            if( !this.getTile(k, j) ) {
-              this.setTile( k, j, 'moving' );  
-              this.setTile( i, j, false ); 
-              break;
-            }
-
-          }
+    var canMove = true;
+    for (var dropLength = 0; dropLength < this.numRows; dropLength++ ) {
+      for (var i = 0; i < this.currentPiece.blocks.length; i++ ) {
+        var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0] + dropLength;
+        var col = this.currentPiece.blocks[i][1] + this.currentPiece.center[1];
+        canMove = canMove && row < this.numRows && !this.getTile( row, col);
+      }
+      if( !canMove ) {
+        dropLength--;
+        this.currentPiece.center[0] += dropLength; 
+        for (var i = 0; i < this.currentPiece.blocks.length; i++ ) {
+          var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
+          var col = this.currentPiece.blocks[i][1] + this.currentPiece.center[1];
+          this.setTile( row, col, 'stationary');
         }
+        break;
       }
     }
-  },
-
-  createNewRandomTile: function() {
   },
 
   addScore: function() {
    this.score++;
   },
-
-
 
 }
