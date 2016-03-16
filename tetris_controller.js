@@ -7,8 +7,6 @@ var controller = {
   },
 
   giveKeyPress: function(dir) {
-    // console.log(dir);
-    // model.updateTilePos(dir);
     switch (dir) {
     case 'right':
       model.moveRight();

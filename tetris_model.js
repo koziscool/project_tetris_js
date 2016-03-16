@@ -8,6 +8,8 @@ var model = {
   tetrisGrid: {},
   emptySlots: [],
 
+  currentPiece: [],
+
   generateTile: function() {
     
   },
@@ -24,16 +26,6 @@ var model = {
     return this.tetrisGrid[ this.gridKey(x, y) ];
   },
 
-  getMovingTile: function() {
-    for (var row = 0; row < this.numRows; row++) { 
-      for (var col = 0; col < this.numCols; col++) { 
-        if (this.getTile(row,col) === "moving") {
-           return [row,col]
-        }
-      }
-    }       
-  },
-
   getScore: function() {
     return this.score;
   },
@@ -48,23 +40,16 @@ var model = {
     this.generateBlockPosition();
   },
 
-  updateTilePos: function(dir) {
-    
-    var pos = getMovingTile;
-
-    if (dir === "right") {
-        var posY = pos[1] + 1;
-    } else {
-        var posY = pos[1] - 1;
-    }  
-  },
-
   generateBlockPosition: function() {
-    var maxCol = this.numCols - this.blockSize + 1;
-    var blockY = Math.floor(Math.random()*maxCol);
-    var blockX = 0;
+    this.currentPiece = new Piece();
+    var minCol = this.currentPiece.bufferLeft;
+    var maxCol = this.numCols - 1 - this.currentPiece.bufferRight;
+    var blockY = Math.floor(Math.random()*(maxCol-minCol)) + minCol;
+    // var blockX = 0;
 
-    this.setTile( blockX, blockY, "moving" );
+    for ( i = 0; i < this.currentPiece.blocks.length; i++ ) {
+      this.setTile( this.currentPiece.blocks[i][0], blockY + this.currentPiece.blocks[i][1], "moving" );
+    }
   },
 
   checkEmptyGrid: function(x,y) {
@@ -178,7 +163,6 @@ var model = {
   },
 
   createNewRandomTile: function() {
-
   },
 
   addScore: function() {
