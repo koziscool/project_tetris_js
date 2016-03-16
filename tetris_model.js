@@ -88,18 +88,17 @@ var model = {
     }
   },
 
-  clearFullRows: function() {
-    var row = this.numRows - 1
+  handleRow: function( currentRow ){
     var rowFull = true; 
     for (var j = 0; j < this.numCols; j++) {
-      rowFull = rowFull && this.getTile( row, j)
+      rowFull = rowFull && ( this.getTile( currentRow, j) === 'stationary' )
     }
     if( rowFull ){
       for (var j = 0; j < this.numCols; j++) {
-        this.setTile( row, j, false );  
+        this.setTile( currentRow, j, false );  
       }
 
-      for( var i = this.numRows - 2; i >= 0; i-- ) { 
+      for( var i = currentRow - 1; i >= 0; i-- ) { 
         for (var j = 0; j < this.numCols; j++) {
           var currentStatus = this.getTile( i, j);
           if( currentStatus ) {
@@ -110,6 +109,11 @@ var model = {
         }
       }
     }
+  },
+
+  clearFullRows: function() {
+    for( var i = this.numRows - 1; i >=0; i-- )
+      this.handleRow( i );
   },
 
   numMovingBlocks: function() {
