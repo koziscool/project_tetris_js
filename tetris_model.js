@@ -38,7 +38,7 @@ var model = {
   generateBlockPosition: function() {
     this.currentPiece = new Piece();
     var minCol = this.currentPiece.bufferLeft;
-    var maxCol = this.numCols - 1 - this.currentPiece.bufferRight;
+    var maxCol = this.numCols - this.currentPiece.bufferRight;
     var blockY = Math.floor(Math.random()*(maxCol-minCol)) + minCol;
     this.currentPiece.center = [0, blockY];
 
@@ -59,20 +59,22 @@ var model = {
   },
 
   moveBlocks: function() {
+    for( var i = 0; i < this.currentPiece.blocks.length; i++ ) {
+      var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
+      var col = this.currentPiece.blocks[i][1] + this.currentPiece.center[1];
+      this.setTile( row, col, false);
+    } 
+
     var canMove = true;
     for (var i = 0; i < this.currentPiece.blocks.length; i++ ) {
       var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
       var col = this.currentPiece.blocks[i][1] + this.currentPiece.center[1];
       var nextRow = row + 1;
-      canMove = canMove && nextRow < this.numRows && !this.getTile( nextRow, col);
+      canMove = canMove && nextRow < this.numRows && 
+        (this.getTile( nextRow, col) !== 'stationary');
     }
 
     if(canMove) {
-      for( var i = 0; i < this.currentPiece.blocks.length; i++ ) {
-        var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
-        var col = this.currentPiece.blocks[i][1] + this.currentPiece.center[1];
-        this.setTile( row, col, false);
-      } 
       this.currentPiece.center[0] += 1; 
       for( var i = 0; i < this.currentPiece.blocks.length; i++ ) {
         var row = this.currentPiece.blocks[i][0] + this.currentPiece.center[0];
@@ -98,7 +100,7 @@ var model = {
         this.setTile( currentRow, j, false );  
       }
 
-      for( var i = currentRow - 1; i >= 0; i-- ) { 
+      for( var i = currentRow - 1; i >= -3; i-- ) { 
         for (var j = 0; j < this.numCols; j++) {
           var currentStatus = this.getTile( i, j);
           if( currentStatus ) {
@@ -112,8 +114,10 @@ var model = {
   },
 
   clearFullRows: function() {
-    for( var i = this.numRows - 1; i >=0; i-- )
-      this.handleRow( i );
+
+    this.handleRow( this.numRows - 1 );
+    // for( var i = this.numRows - 1; i >=0; i-- )
+      // this.handleRow( i );
   },
 
   numMovingBlocks: function() {
